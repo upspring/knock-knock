@@ -90,7 +90,7 @@ class Settings extends Model
     {
         $protectedUrls = [];
 
-        foreach ($this->protectedUrls as $url) {
+        foreach (($this->_getSettingValue('protectedUrls') ?? []) as $url) {
             $urls = explode(PHP_EOL, trim($url));
 
             foreach ($urls as $url) {
@@ -111,7 +111,7 @@ class Settings extends Model
     {
         $unprotectedUrls = [];
 
-        foreach ($this->unprotectedUrls as $url) {
+        foreach (($this->_getSettingValue('unprotectedUrls') ?? []) as $url) {
             $urls = explode(PHP_EOL, trim($url));
 
             foreach ($urls as $url) {
