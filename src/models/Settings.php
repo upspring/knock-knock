@@ -8,12 +8,14 @@ use craft\helpers\UrlHelper;
 
 use yii\base\Exception;
 
+use Closure;
+
 class Settings extends Model
 {
     // Properties
     // =========================================================================
 
-    public bool $enabled = false;
+    public bool|Closure $enabled = false;
     public string $password = '';
     public string $loginPath = '';
     public string $template = '';
@@ -59,7 +61,14 @@ class Settings extends Model
 
     public function getEnabled(): bool
     {
-        return $this->_getSettingValue('enabled') ?? false;
+        $enabled = $this->_getSettingValue('enabled');
+
+        // Allow the enabled setting to be a callback function
+        if (is_callable($enabled)) {
+            return $enabled();
+        }
+
+        return $enabled ?? false;
     }
 
     public function getTemplate(): string
