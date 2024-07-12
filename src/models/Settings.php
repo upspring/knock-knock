@@ -8,6 +8,8 @@ use craft\helpers\UrlHelper;
 
 use yii\base\Exception;
 
+use Throwable;
+
 class Settings extends Model
 {
     // Properties
@@ -130,16 +132,21 @@ class Settings extends Model
 
     private function _getSettingValue($value)
     {
-        $currentSite = Craft::$app->getSites()->getCurrentSite();
-        $siteSettings = $this->siteSettings[$currentSite->handle] ?? [];
+        try {
+            $currentSite = Craft::$app->getSites()->getCurrentSite();
+            $siteSettings = $this->siteSettings[$currentSite->handle] ?? [];
 
-        // Allow global override
-        if ($this->$value) {
-            return $this->$value;
-        }
+            // Allow global override
+            if ($this->$value) {
+                return $this->$value;
+            }
 
-        if (Craft::$app->getIsMultiSite() && $siteSettings && isset($siteSettings[$value])) {
-            return $siteSettings[$value];
+            if (Craft::$app->getIsMultiSite() && $siteSettings && isset($siteSettings[$value])) {
+                return $siteSettings[$value];
+            }
+        } catch (Throwable $e) {
+            // In the case where a primary site might not be available yet
+            // https://github.com/verbb/knock-knock/issues/75
         }
 
         return null;
