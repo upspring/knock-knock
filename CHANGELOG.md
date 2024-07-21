@@ -1,5 +1,17 @@
 # Changelog
 
+## 3.0.1 - 2024-07-21
+
+### Added
+- Allow `enabled` to be set using a callback function in config files.
+
+### Changed
+- Update English translations.
+
+### Fixed
+- Fix multi-site protected/unprotected URLs not being honoured.
+- Fix an error when trying to determine multi-site plugin settings for installs where no primary site exists yet.
+
 ## 3.0.0 - 2024-05-13
 
 ### Changed
