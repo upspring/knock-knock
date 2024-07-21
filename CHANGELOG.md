@@ -6,6 +6,17 @@
 - Now requires PHP `8.2.0+`.
 - Now requires Craft `5.0.0+`.
 
+## 2.0.12 - 2024-07-21
+
+### Added
+- Allow `enabled` to be set using a callback function in config files.
+
+### Changed
+- Update English translations.
+
+### Fixed
+- Fix multi-site protected/unprotected URLs not being honoured.
+
 ## 2.0.11 - 2023-11-09
 
 ### Changed

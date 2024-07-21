@@ -8,6 +8,7 @@ use craft\helpers\UrlHelper;
 
 use yii\base\Exception;
 
+use Closure;
 use Throwable;
 
 class Settings extends Model
@@ -15,7 +16,7 @@ class Settings extends Model
     // Properties
     // =========================================================================
 
-    public bool $enabled = false;
+    public bool|Closure $enabled = false;
     public string $password = '';
     public string $loginPath = '';
     public string $template = '';
@@ -61,7 +62,14 @@ class Settings extends Model
 
     public function getEnabled(): bool
     {
-        return $this->_getSettingValue('enabled') ?? false;
+        $enabled = $this->_getSettingValue('enabled');
+
+        // Allow the enabled setting to be a callback function
+        if (is_callable($enabled)) {
+            return $enabled();
+        }
+
+        return $enabled ?? false;
     }
 
     public function getTemplate(): string
@@ -92,7 +100,7 @@ class Settings extends Model
     {
         $protectedUrls = [];
 
-        foreach ($this->protectedUrls as $url) {
+        foreach (($this->_getSettingValue('protectedUrls') ?? []) as $url) {
             $urls = explode(PHP_EOL, trim($url));
 
             foreach ($urls as $url) {
@@ -113,7 +121,7 @@ class Settings extends Model
     {
         $unprotectedUrls = [];
 
-        foreach ($this->unprotectedUrls as $url) {
+        foreach (($this->_getSettingValue('unprotectedUrls') ?? []) as $url) {
             $urls = explode(PHP_EOL, trim($url));
 
             foreach ($urls as $url) {
