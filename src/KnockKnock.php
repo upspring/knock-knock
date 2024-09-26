@@ -114,10 +114,11 @@ class KnockKnock extends Plugin
             // Normalise the URLs a little, just in case to prevent infinite loops
             $url = $request->getAbsoluteUrl();
             $cookie = $request->getCookies()->get('siteAccessToken');
+            $accessPassword = KnockKnock::$plugin->getSettings()->getPassword();
             $loginPath = UrlHelper::siteUrl($settings->getLoginPath());
 
             // Check for the site access cookie, and check we're not causing a loop
-            if ($cookie != '' || stripos($url, $loginPath) !== false) {
+            if ($cookie == $accessPassword || stripos($url, $loginPath) !== false) {
                 return;
             }
 

@@ -85,7 +85,7 @@ class DefaultController extends Controller
         if ($accessPassword == $password) {
             $cookie = new Cookie(Craft::cookieConfig([
                 'name' => 'siteAccessToken',
-                'value' => $request->csrfToken,
+                'value' => $accessPassword,
                 'expire' => time() + 3600,
             ]));
 
