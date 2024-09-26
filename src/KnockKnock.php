@@ -113,7 +113,8 @@ class KnockKnock extends Plugin
 
             // Normalise the URLs a little, just in case to prevent infinite loops
             $url = $request->getAbsoluteUrl();
-            $cookie = $request->getCookies()->get('siteAccessToken');
+            $siteHandle = Craft::$app->getSites()->getCurrentSite()->handle;
+            $cookie = $request->getCookies()->get("siteAccessToken-$siteHandle");
             $accessPassword = KnockKnock::$plugin->getSettings()->getPassword();
             $loginPath = UrlHelper::siteUrl($settings->getLoginPath());
 

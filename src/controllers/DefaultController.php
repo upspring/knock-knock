@@ -83,8 +83,9 @@ class DefaultController extends Controller
         }
 
         if ($accessPassword == $password) {
+            $siteHandle = Craft::$app->getSites()->getCurrentSite()->handle;
             $cookie = new Cookie(Craft::cookieConfig([
-                'name' => 'siteAccessToken',
+                'name' => "siteAccessToken-$siteHandle",
                 'value' => $accessPassword,
                 'expire' => time() + 3600,
             ]));
